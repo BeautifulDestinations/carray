@@ -272,7 +272,7 @@ cmpCArray :: (IArray CArray e, Ix i, Ord e)
 cmpCArray arr1 arr2 = compare (assocs arr1) (assocs arr2)
 
 {-# INLINE cmpIntCArray #-}
-cmpIntCArray :: (IArray CArray e, Ord e)
+cmpIntCArray :: (IArray CArray e, Ord e, Storable e)
                        => CArray Int e -> CArray Int e -> Ordering
 cmpIntCArray arr1@(CArray l1 u1 n1 _) arr2@(CArray l2 u2 n2 _) =
     if n1 == 0 then if n2 == 0 then EQ else LT else
@@ -285,7 +285,7 @@ cmpIntCArray arr1@(CArray l1 u1 n1 _) arr2@(CArray l2 u2 n2 _) =
         EQ    -> rest
         other -> other
 
-{-# RULES "cmpCArray/Int" cmpCArray = cmpIntCArray #-}
+-- {-# RULES "cmpCArray/Int" cmpCArray = cmpIntCArray #-}
 
 instance (Ix ix, Eq e, IArray CArray e) => Eq (CArray ix e) where
     (==) = eqCArray
